@@ -1,0 +1,55 @@
+.world-builder-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.world-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.world-header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 100;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.world-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--eb-orange);
+}
+
+.world-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.avatar-setup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  z-index: 200;
+}
+
+.avatar-setup h2 {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.avatar-setup p {
+  color: var(--light-gray);
+  margin-bottom: 24px;
+}

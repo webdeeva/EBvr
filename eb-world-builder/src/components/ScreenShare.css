@@ -1,0 +1,76 @@
+.screen-share-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+}
+
+.screen-share-container {
+  width: 90%;
+  max-width: 800px;
+  padding: 24px;
+}
+
+.screen-share-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.screen-share-header h3 {
+  font-size: 24px;
+  color: var(--eb-orange);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: var(--eb-orange);
+}
+
+.screen-share-content {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  background: var(--secondary-bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.screen-share-video {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+}
+
+.screen-share-placeholder {
+  text-align: center;
+  padding: 40px;
+}
+
+.screen-share-placeholder p {
+  color: var(--light-gray);
+  font-size: 18px;
+}
+
+.screen-share-controls {
+  display: flex;
+  justify-content: center;
+}
