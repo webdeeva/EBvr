@@ -10,7 +10,7 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3003",
+    origin: "http://localhost:8347",
     methods: ["GET", "POST"]
   }
 });
@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 8348;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

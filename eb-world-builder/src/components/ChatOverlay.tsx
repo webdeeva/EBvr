@@ -20,7 +20,8 @@ const ChatOverlay: React.FC<ChatOverlayProps> = ({ worldId }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3002', {
+    const serverPort = process.env.REACT_APP_SERVER_PORT || '8348';
+    const newSocket = io(`http://localhost:${serverPort}`, {
       query: { worldId }
     });
 

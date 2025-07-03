@@ -12,25 +12,136 @@
 
 .world-header {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  right: 20px;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  height: 48px;
   z-index: 100;
-  padding: 20px;
+  padding: 0 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
 }
 
 .world-header h1 {
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 600;
-  color: var(--eb-orange);
+  color: white;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-info span {
+  font-weight: 500;
 }
 
 .world-controls {
   display: flex;
-  gap: 12px;
+  gap: 4px;
+  align-items: center;
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+  height: 32px;
+}
+
+.btn-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.05));
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.btn-glass:hover::before {
+  opacity: 1;
+}
+
+.btn-glass:active {
+  transform: translateY(0);
+}
+
+.btn-glass.active {
+  background: rgba(204, 85, 0, 0.2);
+  border-color: rgba(204, 85, 0, 0.4);
+  color: #ff8c42;
+}
+
+.btn-glass.active:hover {
+  background: rgba(204, 85, 0, 0.3);
+  border-color: rgba(204, 85, 0, 0.5);
+}
+
+.btn-glass.collapsed {
+  padding: 6px;
+  min-width: 32px;
+}
+
+.btn-glass span {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* Divider between button groups */
+.world-controls::before {
+  content: '';
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 8px;
+}
+
+/* Remove divider before first element */
+.world-controls > :first-child::before {
+  display: none;
 }
 
 .avatar-setup {

@@ -1,44 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, useAnimations } from '@react-three/drei';
+import { Avatar } from '@readyplayerme/visage';
 import * as THREE from 'three';
 
-interface AvatarControllerProps {
+interface VisageAvatarProps {
   avatarUrl: string;
   position: [number, number, number];
 }
 
-const AvatarController: React.FC<AvatarControllerProps> = ({ avatarUrl, position }) => {
-  const { scene, animations } = useGLTF(avatarUrl);
+const VisageAvatar: React.FC<VisageAvatarProps> = ({ avatarUrl, position }) => {
   const avatarRef = useRef<THREE.Group>(null);
   const { camera } = useThree();
-  const { actions, names } = useAnimations(animations, avatarRef);
-  const [isMoving, setIsMoving] = useState(false);
-  
-  useEffect(() => {
-    console.log('Avatar loaded from URL:', avatarUrl);
-    console.log('Avatar scene:', scene);
-    console.log('Available animations:', names);
-    // Focus the window to capture keyboard input
-    window.focus();
-    
-    // Reset avatar position to ensure it starts at the correct location
-    if (avatarRef.current) {
-      avatarRef.current.position.set(position[0], position[1], position[2]);
-      // Set initial camera position
-      camera.position.set(0, 5, 10);
-      camera.lookAt(0, 1, 0);
-    }
-    
-    // Play idle animation if available
-    if (actions && names && names.length > 0) {
-      // Try to find idle animation or play the first one
-      const idleAnimation = names.find(name => name.toLowerCase().includes('idle')) || names[0];
-      if (idleAnimation && actions && actions[idleAnimation]) {
-        actions[idleAnimation]?.play();
-      }
-    }
-  }, [avatarUrl, scene, position, camera, actions, names]);
+  const [currentAnimation, setCurrentAnimation] = useState<string>('/animations/idle-male.glb');
   
   const velocity = useRef(new THREE.Vector3());
   const direction = useRef(new THREE.Vector3());
@@ -48,15 +21,23 @@ const AvatarController: React.FC<AvatarControllerProps> = ({ avatarUrl, position
     s: false,
     d: false,
     shift: false,
-    space: false
   });
+
+  useEffect(() => {
+    console.log('Visage Avatar loaded:', avatarUrl);
+    
+    if (avatarRef.current) {
+      avatarRef.current.position.set(...position);
+      camera.position.set(0, 5, 10);
+      camera.lookAt(0, 1, 0);
+    }
+  }, [avatarUrl, position, camera]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
       if (key in keys.current) {
         keys.current[key as keyof typeof keys.current] = true;
-        console.log(`Key pressed: ${key}`);
       }
     };
 
@@ -64,7 +45,6 @@ const AvatarController: React.FC<AvatarControllerProps> = ({ avatarUrl, position
       const key = e.key.toLowerCase();
       if (key in keys.current) {
         keys.current[key as keyof typeof keys.current] = false;
-        console.log(`Key released: ${key}`);
       }
     };
 
@@ -81,7 +61,24 @@ const AvatarController: React.FC<AvatarControllerProps> = ({ avatarUrl, position
     if (!avatarRef.current) return;
 
     const speed = keys.current.shift ? 10 : 5;
+    const isMoving = keys.current.w || keys.current.s || keys.current.a || keys.current.d;
+    const isRunning = isMoving && keys.current.shift;
     
+    // Determine which animation to play
+    let targetAnimation = '/animations/idle-male.glb';
+    if (isRunning) {
+      targetAnimation = '/animations/run-male.glb';
+    } else if (isMoving) {
+      targetAnimation = '/animations/walk-male.glb';
+    }
+    
+    // Update animation if changed
+    if (targetAnimation !== currentAnimation) {
+      setCurrentAnimation(targetAnimation);
+      console.log('Switching animation to:', targetAnimation);
+    }
+    
+    // Movement logic
     direction.current.set(0, 0, 0);
     
     if (keys.current.w) direction.current.z -= 1;
@@ -93,32 +90,50 @@ const AvatarController: React.FC<AvatarControllerProps> = ({ avatarUrl, position
     
     if (direction.current.length() > 0) {
       velocity.current.add(direction.current.multiplyScalar(speed * delta));
-      console.log('Moving avatar, position:', avatarRef.current.position);
     }
     
     velocity.current.multiplyScalar(0.9);
     
-    avatarRef.current.position.add(velocity.current);
+    avatarRef.current.position.x += velocity.current.x;
+    avatarRef.current.position.z += velocity.current.z;
+    avatarRef.current.position.y = position[1];
     
     if (direction.current.length() > 0) {
       const angle = Math.atan2(direction.current.x, direction.current.z);
       avatarRef.current.rotation.y = angle;
     }
     
+    // Camera follow
     const cameraOffset = new THREE.Vector3(0, 5, 10);
     cameraOffset.applyQuaternion(avatarRef.current.quaternion);
     camera.position.lerp(
-      avatarRef.current.position.clone().add(cameraOffset),
+      new THREE.Vector3(
+        avatarRef.current.position.x + cameraOffset.x,
+        avatarRef.current.position.y + cameraOffset.y,
+        avatarRef.current.position.z + cameraOffset.z
+      ),
       0.1
     );
     camera.lookAt(avatarRef.current.position);
   });
 
   return (
-    <group ref={avatarRef} position={position}>
-      <primitive object={scene} scale={1} position={[0, 0, 0]} />
+    <group ref={avatarRef}>
+      <Avatar 
+        modelSrc={avatarUrl}
+        animationSrc={currentAnimation}
+        shadows
+        onLoaded={() => {
+          console.log('Avatar model loaded');
+        }}
+        onAnimationEnd={(action) => {
+          console.log('Animation ended:', action);
+          // Restart the animation to loop it
+          action.reset().play();
+        }}
+      />
     </group>
   );
 };
 
-export default AvatarController;
+export default VisageAvatar;

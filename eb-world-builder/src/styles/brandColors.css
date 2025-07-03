@@ -1,0 +1,36 @@
+/* EB Brand Colors - Burnt Orange Theme */
+:root {
+  /* Primary burnt orange colors */
+  --eb-primary: #CC5500;
+  --eb-primary-rgb: 204, 85, 0;
+  --eb-primary-hover: #E86100;
+  --eb-primary-dark: #B34700;
+  
+  /* Secondary orange shades */
+  --eb-orange-light: #FF8C42;
+  --eb-orange-lighter: #FFA366;
+  --eb-orange-dark: #993D00;
+  
+  /* UI-specific burnt orange variants */
+  --eb-selection: rgba(204, 85, 0, 0.15);
+  --eb-selection-border: rgba(204, 85, 0, 0.3);
+  --eb-button-bg: rgba(204, 85, 0, 0.2);
+  --eb-button-border: rgba(204, 85, 0, 0.4);
+  --eb-button-hover-bg: rgba(204, 85, 0, 0.3);
+  --eb-button-hover-border: rgba(204, 85, 0, 0.5);
+  
+  /* Keep existing grays and blacks */
+  --eb-bg-primary: #0D0D0D;
+  --eb-bg-secondary: #111111;
+  --eb-bg-tertiary: #1A1A1A;
+  --eb-text-primary: #FFFFFF;
+  --eb-text-secondary: rgba(255, 255, 255, 0.7);
+  --eb-text-tertiary: rgba(255, 255, 255, 0.5);
+}
+
+/* Override blue-based UI elements globally */
+.btn-primary,
+.active,
+.selected {
+  --accent-color: var(--eb-primary);
+}
