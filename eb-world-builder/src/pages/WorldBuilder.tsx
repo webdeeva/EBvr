@@ -14,6 +14,7 @@ import ScreenShare from '../components/ScreenShare';
 import EnvironmentControls from '../components/EnvironmentControls';
 import SimpleEnvironmentModel from '../components/SimpleEnvironmentModel';
 import SceneObjectsList, { SceneObject } from '../components/SceneObjectsList';
+import GroundControls from '../components/GroundControls';
 import ContentDisplay from '../components/ContentDisplay';
 import VRButtonComponent from '../components/VR/VRButton';
 import VRScene from '../components/VR/VRScene';
@@ -27,13 +28,27 @@ import { MessageSquare, Share2, Upload, Globe, Layers, User, Image, Music, Packa
 import VoiceButtonOverlay from '../components/VoiceButtonOverlay';
 import './WorldBuilder.css';
 
-export const Ground: React.FC<{ visible: boolean }> = ({ visible }) => {
+export const Ground: React.FC<{ 
+  visible: boolean;
+  size: number;
+  color: string;
+  textureUrl: string | null;
+}> = ({ visible, size, color, textureUrl }) => {
   if (!visible) return null;
+  
+  const texture = textureUrl ? new THREE.TextureLoader().load(textureUrl) : null;
+  if (texture) {
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(size / 10, size / 10);
+  }
   
   return (
     <mesh name="ground" rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]}>
-      <planeGeometry args={[100, 100]} />
-      <meshStandardMaterial color="#1a1a1a" />
+      <planeGeometry args={[size, size]} />
+      <meshStandardMaterial 
+        color={color} 
+        map={texture}
+      />
     </mesh>
   );
 };
@@ -106,6 +121,14 @@ const WorldBuilder: React.FC = () => {
     };
   }>({});
   const [groundVisible, setGroundVisible] = useState(true);
+  const [showGroundControls, setShowGroundControls] = useState(false);
+  const [groundSettings, setGroundSettings] = useState({
+    size: 100,
+    color: '#1a1a1a',
+    textureUrl: null as string | null,
+    showGrid: true,
+    isLocked: true
+  });
   const [showContentBrowser, setShowContentBrowser] = useState(false);
   const [showSkyboxManager, setShowSkyboxManager] = useState(false);
   const [cameraMode, setCameraMode] = useState<'normal' | 'zoom' | 'birdseye'>('normal');
@@ -676,11 +699,11 @@ const WorldBuilder: React.FC = () => {
             <span>Controls</span>
           </button>
           <button
-            className={`btn-glass ${!groundVisible ? 'inactive' : ''}`}
-            onClick={() => setGroundVisible(!groundVisible)}
-            title={groundVisible ? 'Hide Ground' : 'Show Ground'}
+            className={`btn-glass ${showGroundControls ? 'active' : ''}`}
+            onClick={() => setShowGroundControls(!showGroundControls)}
+            title={showGroundControls ? 'Hide Ground Controls' : 'Show Ground Controls'}
           >
-            {groundVisible ? <Eye size={14} /> : <EyeOff size={14} />}
+            <Layers size={14} />
             <span>Ground</span>
           </button>
           
@@ -761,8 +784,13 @@ const WorldBuilder: React.FC = () => {
           )}
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
-          <Ground visible={groundVisible} />
-          {groundVisible && <gridHelper args={[100, 100, 0x444444, 0x222222]} position={[0, -0.49, 0]} />}
+          <Ground 
+            visible={groundVisible} 
+            size={groundSettings.size}
+            color={groundSettings.color}
+            textureUrl={groundSettings.textureUrl}
+          />
+          {groundVisible && groundSettings.showGrid && <gridHelper args={[groundSettings.size, groundSettings.size, 0x444444, 0x222222]} position={[0, -0.49, 0]} />}
           {Object.keys(environmentModels).length > 0 && <axesHelper args={[5]} />}
           
           {/* Fixed reference markers to help see movement */}
@@ -1144,6 +1172,55 @@ const WorldBuilder: React.FC = () => {
                 }
               }));
             }
+          }}
+        />
+      )}
+
+      {showGroundControls && (
+        <GroundControls
+          size={groundSettings.size}
+          color={groundSettings.color}
+          textureUrl={groundSettings.textureUrl}
+          showGrid={groundSettings.showGrid}
+          isLocked={groundSettings.isLocked}
+          onSizeChange={(size) => {
+            setGroundSettings(prev => ({ ...prev, size }));
+          }}
+          onColorChange={(color) => {
+            setGroundSettings(prev => ({ ...prev, color }));
+          }}
+          onTextureChange={(url) => {
+            setGroundSettings(prev => ({ ...prev, textureUrl: url }));
+          }}
+          onGridToggle={() => {
+            setGroundSettings(prev => ({ ...prev, showGrid: !prev.showGrid }));
+          }}
+          onLockToggle={() => {
+            const newLocked = !groundSettings.isLocked;
+            setGroundSettings(prev => ({ ...prev, isLocked: newLocked }));
+            // Hide avatar when editing (unlocked)
+            setIsEditingEnvironment(!newLocked);
+          }}
+          onReset={() => {
+            setGroundSettings({
+              size: 100,
+              color: '#1a1a1a',
+              textureUrl: null,
+              showGrid: true,
+              isLocked: true
+            });
+            setIsEditingEnvironment(false);
+          }}
+          onClose={() => {
+            setShowGroundControls(false);
+            setIsEditingEnvironment(false);
+            // Lock ground when closing
+            setGroundSettings(prev => ({ ...prev, isLocked: true }));
+          }}
+          onUploadTexture={() => {
+            // Create a temporary flag to indicate we're uploading a ground texture
+            sessionStorage.setItem('uploadingGroundTexture', 'true');
+            setShowContentPicker(true);
           }}
         />
       )}
@@ -1603,6 +1680,21 @@ const WorldBuilder: React.FC = () => {
           
           if (!fileArray || fileArray.length === 0) {
             console.error('No content files uploaded');
+            setShowContentPicker(false);
+            return;
+          }
+          
+          // Check if this is a ground texture upload
+          const isGroundTexture = sessionStorage.getItem('uploadingGroundTexture') === 'true';
+          sessionStorage.removeItem('uploadingGroundTexture');
+          
+          if (isGroundTexture && fileArray.length > 0) {
+            // Handle ground texture upload
+            const file = fileArray[0];
+            const fileUrl = file.url || file.handle || file.uploadURL;
+            if (fileUrl) {
+              setGroundSettings(prev => ({ ...prev, textureUrl: fileUrl }));
+            }
             setShowContentPicker(false);
             return;
           }
