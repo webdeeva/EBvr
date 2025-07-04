@@ -1,0 +1,231 @@
+.auth-box {
+  width: 90%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.auth-box h1 {
+  font-size: 28px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #ff8c42, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-box p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 32px;
+  font-size: 16px;
+}
+
+/* Custom Auth Form Styles */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.auth-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 16px;
+  color: rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 16px 12px 48px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: var(--eb-orange);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+}
+
+.auth-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.auth-submit-btn {
+  width: 100%;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--eb-orange), var(--eb-orange-hover));
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(255, 140, 66, 0.3);
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 140, 66, 0.4);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 8px;
+  color: #ff6b6b;
+  font-size: 14px;
+  text-align: left;
+}
+
+.auth-divider {
+  position: relative;
+  margin: 24px 0;
+  text-align: center;
+}
+
+.auth-divider span {
+  position: relative;
+  padding: 0 16px;
+  background: rgba(26, 26, 26, 0.9);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  z-index: 1;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-50%);
+}
+
+.auth-oauth-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.auth-oauth-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-oauth-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.auth-switch {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.auth-switch-btn {
+  background: none;
+  border: none;
+  color: var(--eb-orange);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.auth-switch-btn:hover {
+  color: var(--eb-orange-hover);
+}
+
+/* Override Supabase Auth UI styles */
+.auth-ui-container {
+  color: white !important;
+}
+
+.auth-ui-container .supabase-auth-ui_ui-divider {
+  background: rgba(255, 255, 255, 0.1) !important;
+  margin: 24px 0 !important;
+}
+
+.auth-ui-container .supabase-auth-ui_ui-label {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 500 !important;
+}
+
+.auth-ui-container .supabase-auth-ui_ui-input {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+}
+
+.auth-ui-container .supabase-auth-ui_ui-input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.auth-ui-container .supabase-auth-ui_ui-button {
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.auth-ui-container .supabase-auth-ui_ui-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3) !important;
+}
+
+.auth-ui-container .supabase-auth-ui_ui-anchor {
+  color: #ff8c42 !important;
+  text-decoration: none !important;
+}
+
+.auth-ui-container .supabase-auth-ui_ui-anchor:hover {
+  color: #ff7328 !important;
+  text-decoration: underline !important;
+}
+
+.auth-ui-container .supabase-auth-ui_ui-message {
+  background: rgba(255, 107, 107, 0.1) !important;
+  border: 1px solid rgba(255, 107, 107, 0.3) !important;
+  color: #ff6b6b !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  margin-bottom: 16px !important;
+}

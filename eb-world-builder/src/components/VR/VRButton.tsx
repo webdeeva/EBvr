@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useXRStore } from '@react-three/xr';
 import { Headset } from 'lucide-react';
 
 const VRButton: React.FC = () => {
   const [isSupported, setIsSupported] = useState(false);
-  const enterVR = useXRStore((state) => state.enterVR);
-  const exitVR = useXRStore((state) => state.exitVR);
-  const isPresenting = useXRStore((state) => state.isPresenting);
 
   useEffect(() => {
     // Check WebXR support
@@ -15,32 +11,24 @@ const VRButton: React.FC = () => {
     }
   }, []);
 
-  const handleVRToggle = () => {
-    if (isPresenting) {
-      exitVR();
-    } else {
-      enterVR();
-    }
-  };
-
   if (!isSupported) {
     return null;
   }
 
+  // Just show VR support indicator
   return (
-    <button
-      className={`btn-glass ${isPresenting ? 'active' : ''}`}
-      onClick={handleVRToggle}
-      title={isPresenting ? 'Exit VR' : 'Enter VR'}
+    <div
+      className="btn-glass"
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '6px'
+        gap: '6px',
+        cursor: 'default'
       }}
     >
       <Headset size={14} />
-      <span>{isPresenting ? 'Exit VR' : 'Enter VR'}</span>
-    </button>
+      <span>VR Ready</span>
+    </div>
   );
 };
 

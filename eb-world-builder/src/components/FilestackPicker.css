@@ -1,0 +1,66 @@
+.filestack-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.filestack-picker-modal {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 140, 66, 0.3);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.filestack-picker-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 140, 66, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filestack-picker-header h2 {
+  margin: 0;
+  color: #ff8c42;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.filestack-picker-close {
+  background: transparent;
+  border: none;
+  color: #ff8c42;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.filestack-picker-close:hover {
+  background: rgba(255, 140, 66, 0.2);
+}
+
+.filestack-picker-body {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}

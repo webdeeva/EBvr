@@ -1,0 +1,276 @@
+.skybox-manager-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.skybox-manager {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 140, 66, 0.3);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.skybox-manager-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 140, 66, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skybox-manager-header h2 {
+  margin: 0;
+  color: #ff8c42;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.skybox-manager-close {
+  background: transparent;
+  border: none;
+  color: #ff8c42;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.skybox-manager-close:hover {
+  background: rgba(255, 140, 66, 0.2);
+}
+
+.skybox-manager-actions {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skybox-clear-btn {
+  background: rgba(255, 140, 66, 0.1);
+  border: 1px solid rgba(255, 140, 66, 0.3);
+  color: #ff8c42;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.skybox-clear-btn:hover:not(:disabled) {
+  background: rgba(255, 140, 66, 0.2);
+  border-color: rgba(255, 140, 66, 0.4);
+}
+
+.skybox-clear-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.skybox-manager-grid {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.skybox-manager-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.skybox-manager-empty svg {
+  opacity: 0.3;
+}
+
+.skybox-manager-hint {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.skybox-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.skybox-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.skybox-item.active {
+  border-color: #ff8c42;
+  box-shadow: 0 0 0 2px rgba(255, 140, 66, 0.3);
+}
+
+.skybox-thumbnail {
+  width: 100%;
+  height: 160px;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skybox-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.skybox-thumbnail canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.skybox-thumbnail-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.skybox-active-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 140, 66, 0.9);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.skybox-info {
+  padding: 12px;
+}
+
+.skybox-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.skybox-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.skybox-type {
+  background: rgba(255, 140, 66, 0.2);
+  color: #ff8c42;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.skybox-date {
+  font-family: monospace;
+}
+
+.skybox-actions {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 4px;
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+}
+
+.skybox-item:hover .skybox-actions {
+  opacity: 1;
+}
+
+.skybox-action-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.skybox-action-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.skybox-delete-btn:hover {
+  background: rgba(244, 67, 54, 0.2);
+  border-color: rgba(244, 67, 54, 0.4);
+  color: #f44336;
+}
+
+/* Scrollbar styling */
+.skybox-manager-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.skybox-manager-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.skybox-manager-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.skybox-manager-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}

@@ -17,7 +17,7 @@
   right: 12px;
   height: 48px;
   z-index: 100;
-  padding: 0 16px;
+  padding: 8px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -68,7 +68,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.8);
-  padding: 6px 10px;
+  padding: 4px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -76,10 +76,40 @@
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 2px;
   position: relative;
-  overflow: hidden;
-  height: 32px;
+  height: 28px;
+  width: 28px;
+}
+
+.btn-glass svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* Tooltip styling */
+.btn-glass[title] {
+  position: relative;
+}
+
+.btn-glass[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
 }
 
 .btn-glass::before {
@@ -99,6 +129,14 @@
   border-color: rgba(255, 255, 255, 0.12);
   color: white;
   transform: translateY(-1px);
+  width: auto;
+  padding: 4px 8px;
+}
+
+.btn-glass:hover span {
+  max-width: 100px;
+  opacity: 1;
+  margin-left: 2px;
 }
 
 .btn-glass:hover::before {
@@ -121,13 +159,34 @@
 }
 
 .btn-glass.collapsed {
-  padding: 6px;
-  min-width: 32px;
+  padding: 4px;
+  width: 28px;
+}
+
+.btn-glass.inactive {
+  opacity: 0.5;
+}
+
+.btn-glass.btn-leave {
+  background: rgba(255, 59, 48, 0.1);
+  border-color: rgba(255, 59, 48, 0.3);
+  color: #ff6b6b;
+  margin-left: 8px;
+}
+
+.btn-glass.btn-leave:hover {
+  background: rgba(255, 59, 48, 0.2);
+  border-color: rgba(255, 59, 48, 0.4);
 }
 
 .btn-glass span {
   font-weight: 500;
   letter-spacing: 0.01em;
+  white-space: nowrap;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.2s ease;
 }
 
 /* Divider between button groups */
@@ -163,4 +222,136 @@
 .avatar-setup p {
   color: var(--light-gray);
   margin-bottom: 24px;
+}
+
+/* VR Button positioning - override the library's positioning */
+body > div[style*="position: absolute"] {
+  bottom: 20px !important;
+  top: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+}
+
+/* Auth Modal Styles */
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.auth-modal-content {
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  animation: slideUp 0.3s ease;
+}
+
+.auth-modal-close {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.auth-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* Voice Chat Button States */
+.btn-glass.muted {
+  background: rgba(255, 59, 48, 0.1);
+  border-color: rgba(255, 59, 48, 0.3);
+  color: #ff6b6b;
+}
+
+.btn-glass.muted:hover {
+  background: rgba(255, 59, 48, 0.2);
+  border-color: rgba(255, 59, 48, 0.4);
+}
+
+/* Speaking Animation */
+@keyframes speaking-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 199, 60, 0.7);
+    transform: translateY(-1px) scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(0, 199, 60, 0.3);
+    transform: translateY(-1px) scale(1.02);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 199, 60, 0);
+    transform: translateY(-1px) scale(1);
+  }
+}
+
+.btn-glass.speaking {
+  background: rgba(0, 199, 60, 0.15);
+  border-color: rgba(0, 199, 60, 0.4);
+  color: #00c73c;
+  animation: speaking-pulse 1.5s infinite;
+}
+
+.btn-glass.speaking:hover {
+  background: rgba(0, 199, 60, 0.25);
+  border-color: rgba(0, 199, 60, 0.5);
+}
+
+/* Disabled state */
+.btn-glass.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-glass.disabled:hover {
+  transform: none;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Saving state */
+.btn-glass.saving {
+  background: rgba(0, 199, 60, 0.1);
+  border-color: rgba(0, 199, 60, 0.3);
+  color: #00c73c;
+  cursor: wait;
+}
+
+.btn-glass.saving:hover {
+  transform: none;
+}
+
+/* Save notification animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }

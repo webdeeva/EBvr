@@ -1,0 +1,195 @@
+.cloudinary-upload-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.cloudinary-upload-modal {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 140, 66, 0.3);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.cloudinary-upload-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 140, 66, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cloudinary-upload-header h2 {
+  margin: 0;
+  color: #ff8c42;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.cloudinary-upload-close {
+  background: transparent;
+  border: none;
+  color: #ff8c42;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.cloudinary-upload-close:hover {
+  background: rgba(255, 140, 66, 0.2);
+}
+
+.cloudinary-upload-body {
+  padding: 20px;
+}
+
+.cloudinary-error {
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  color: #f44336;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.cloudinary-dropzone {
+  border: 2px dashed rgba(255, 140, 66, 0.5);
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(255, 140, 66, 0.05);
+  color: #aaa;
+}
+
+.cloudinary-dropzone:hover {
+  border-color: #ff8c42;
+  background: rgba(255, 140, 66, 0.1);
+}
+
+.cloudinary-dropzone svg {
+  color: #ff8c42;
+  margin-bottom: 16px;
+}
+
+.cloudinary-dropzone p {
+  margin: 8px 0;
+}
+
+.cloudinary-formats {
+  font-size: 14px;
+  color: #666;
+}
+
+.cloudinary-max-size {
+  font-size: 12px;
+  color: #555;
+}
+
+.cloudinary-file-info {
+  color: #fff;
+}
+
+.cloudinary-file-name {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.cloudinary-file-size {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.cloudinary-progress {
+  margin: 20px 0;
+}
+
+.cloudinary-progress-bar {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.cloudinary-progress-fill {
+  background: #ff8c42;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.cloudinary-progress p {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.cloudinary-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.cloudinary-button {
+  flex: 1;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cloudinary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cloudinary-button-cancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.cloudinary-button-cancel:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.cloudinary-button-upload {
+  background: #ff8c42;
+  color: #fff;
+}
+
+.cloudinary-button-upload:hover:not(:disabled) {
+  background: #ff7a2a;
+}
+
+.cloudinary-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

@@ -3,13 +3,18 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils';
+import FloatingNameTagWithEvents from './FloatingNameTagWithEvents';
 
 interface FixedRetargetedAvatarProps {
   avatarUrl: string;
   position: [number, number, number];
+  disableCameraControl?: boolean;
+  onGroupRef?: (ref: THREE.Group | null) => void;
+  userName?: string;
+  showNameTag?: boolean;
 }
 
-const FixedRetargetedAvatar: React.FC<FixedRetargetedAvatarProps> = ({ avatarUrl, position }) => {
+const FixedRetargetedAvatar: React.FC<FixedRetargetedAvatarProps> = ({ avatarUrl, position, disableCameraControl = false, onGroupRef, userName, showNameTag = true }) => {
   const group = useRef<THREE.Group>(null);
   const { camera } = useThree();
   
@@ -48,12 +53,11 @@ const FixedRetargetedAvatar: React.FC<FixedRetargetedAvatarProps> = ({ avatarUrl
     return anims;
   }, [idleModel.animations, walkModel.animations, runModel.animations]);
   
-  // Set up animations on the avatar
-  const { actions, mixer } = useAnimations(animations, group);
+  // Set up animations on the cloned avatar
+  const { actions, mixer } = useAnimations(animations, clonedAvatar);
   
   // Animation state
   const currentAnimation = useRef('idle');
-  const animationInitialized = useRef(false);
   
   // Movement state
   const velocity = useRef(new THREE.Vector3());
@@ -71,15 +75,22 @@ const FixedRetargetedAvatar: React.FC<FixedRetargetedAvatarProps> = ({ avatarUrl
   const cameraAngle = useRef({ x: 0, y: 0 });
   const isMouseDown = useRef(false);
 
-  // Initialize animations once
+  // Initialize animations
   useEffect(() => {
-    if (!animationInitialized.current && actions.idle) {
+    if (actions.idle && mixer) {
       console.log('Initializing animations');
       console.log('Available actions:', Object.keys(actions));
-      actions.idle.play();
-      animationInitialized.current = true;
+      
+      // Stop all current actions
+      Object.values(actions).forEach(action => {
+        if (action) action.stop();
+      });
+      
+      // Play idle animation
+      actions.idle.reset().play();
+      currentAnimation.current = 'idle';
     }
-  }, [actions]);
+  }, [actions, mixer]);
 
   // Initialize position
   useEffect(() => {
@@ -87,8 +98,13 @@ const FixedRetargetedAvatar: React.FC<FixedRetargetedAvatarProps> = ({ avatarUrl
       group.current.position.set(...position);
       camera.position.set(0, 5, 10);
       camera.lookAt(0, 1, 0);
+      
+      // Call the ref callback if provided
+      if (onGroupRef) {
+        onGroupRef(group.current);
+      }
     }
-  }, [position, camera]);
+  }, [position, camera, onGroupRef]);
 
   // Keyboard and mouse controls
   useEffect(() => {
@@ -214,33 +230,42 @@ const FixedRetargetedAvatar: React.FC<FixedRetargetedAvatarProps> = ({ avatarUrl
     group.current.position.z += velocity.current.z;
     group.current.position.y = position[1];
     
-    // Camera follow with mouse orbit controls
-    const cameraOffset = new THREE.Vector3(
-      Math.sin(cameraAngle.current.x) * cameraDistance.current,
-      5 + Math.sin(cameraAngle.current.y) * cameraDistance.current * 0.5,
-      Math.cos(cameraAngle.current.x) * cameraDistance.current
-    );
-    
-    const desiredCameraPosition = new THREE.Vector3(
-      group.current.position.x + cameraOffset.x,
-      group.current.position.y + cameraOffset.y,
-      group.current.position.z + cameraOffset.z
-    );
-    
-    camera.position.lerp(desiredCameraPosition, 0.1);
-    
-    // Look at avatar with slight offset upward
-    const lookTarget = new THREE.Vector3(
-      group.current.position.x,
-      group.current.position.y + 1.5,
-      group.current.position.z
-    );
-    camera.lookAt(lookTarget);
+    // Camera follow with mouse orbit controls (only if not disabled)
+    if (!disableCameraControl) {
+      const cameraOffset = new THREE.Vector3(
+        Math.sin(cameraAngle.current.x) * cameraDistance.current,
+        5 + Math.sin(cameraAngle.current.y) * cameraDistance.current * 0.5,
+        Math.cos(cameraAngle.current.x) * cameraDistance.current
+      );
+      
+      const desiredCameraPosition = new THREE.Vector3(
+        group.current.position.x + cameraOffset.x,
+        group.current.position.y + cameraOffset.y,
+        group.current.position.z + cameraOffset.z
+      );
+      
+      camera.position.lerp(desiredCameraPosition, 0.1);
+      
+      // Look at avatar with slight offset upward
+      const lookTarget = new THREE.Vector3(
+        group.current.position.x,
+        group.current.position.y + 1.5,
+        group.current.position.z
+      );
+      camera.lookAt(lookTarget);
+    }
   });
 
   return (
     <group ref={group}>
       <primitive object={clonedAvatar} />
+      {/* Name tag attached to the avatar */}
+      {userName && showNameTag && (
+        <FloatingNameTagWithEvents 
+          name={userName} 
+          position={[0, 0, 0]}
+        />
+      )}
     </group>
   );
 };

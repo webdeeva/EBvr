@@ -51,13 +51,6 @@ const VRAvatar: React.FC<VRAvatarProps> = ({ avatarUrl }) => {
       
       // Rotate avatar based on player rotation
       avatarRef.current.quaternion.copy(player.quaternion);
-      
-      // Optional: Update head bone position to match HMD
-      if (headBone.current) {
-        const headOffset = player.position.clone();
-        headOffset.y += 1.6; // Approximate head height
-        headBone.current.position.copy(headOffset);
-      }
     }
   });
 

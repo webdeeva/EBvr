@@ -5,23 +5,26 @@
   width: 260px;
   max-height: 400px;
   z-index: 100;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(15, 15, 25, 0.7);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 140, 66, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .list-header {
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 140, 66, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .list-header h3 {
@@ -32,11 +35,13 @@
 }
 
 .object-count {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 2px 8px;
+  background: rgba(255, 140, 66, 0.1);
+  padding: 3px 10px;
   border-radius: 12px;
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 140, 66, 0.9);
+  font-weight: 500;
+  border: 1px solid rgba(255, 140, 66, 0.15);
 }
 
 .objects-container {
@@ -64,8 +69,8 @@
 
 .object-item {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
+  border: 1px solid rgba(255, 140, 66, 0.08);
+  border-radius: 10px;
   padding: 10px 12px;
   margin-bottom: 6px;
   cursor: pointer;
@@ -78,14 +83,16 @@
 }
 
 .object-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 140, 66, 0.08);
+  border-color: rgba(255, 140, 66, 0.15);
   transform: translateX(-2px);
+  box-shadow: 0 2px 8px rgba(255, 140, 66, 0.1);
 }
 
 .object-item.selected {
-  background: rgba(204, 85, 0, 0.15);
-  border-color: rgba(204, 85, 0, 0.3);
+  background: rgba(255, 140, 66, 0.15);
+  border-color: rgba(255, 140, 66, 0.3);
+  box-shadow: 0 2px 12px rgba(255, 140, 66, 0.2);
 }
 
 .object-info {
@@ -127,11 +134,11 @@
 }
 
 .action-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 140, 66, 0.1);
+  color: rgba(255, 255, 255, 0.7);
   padding: 5px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
   display: flex;
@@ -142,8 +149,10 @@
 }
 
 .action-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 140, 66, 0.1);
+  border-color: rgba(255, 140, 66, 0.2);
   color: white;
+  transform: scale(1.05);
 }
 
 .action-btn.delete:hover {
@@ -163,10 +172,10 @@
 }
 
 .objects-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 140, 66, 0.3);
   border-radius: 3px;
 }
 
 .objects-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 140, 66, 0.5);
 }

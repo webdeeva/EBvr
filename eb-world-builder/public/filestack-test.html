@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Filestack Test</title>
+    <script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        button {
+            background: #ff8c42;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #ff7a2a;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Filestack API Test</h1>
+    <p>Testing with API key: ASvquDklWTMjc1CnlnUOAz</p>
+    
+    <button onclick="testBasicPicker()">Test Basic Picker</button>
+    <button onclick="testEnvironmentPicker()">Test Environment Picker</button>
+    <button onclick="testImagePicker()">Test Image Picker</button>
+    
+    <div id="result" class="result"></div>
+
+    <script>
+        const apikey = 'ASvquDklWTMjc1CnlnUOAz';
+        const client = filestack.init(apikey);
+        const resultDiv = document.getElementById('result');
+
+        function showResult(title, data) {
+            resultDiv.innerHTML = `<h3>${title}</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        function testBasicPicker() {
+            client.picker({
+                onUploadDone: (result) => {
+                    console.log('Basic picker result:', result);
+                    showResult('Basic Picker Result', result);
+                },
+                onFileUploadFailed: (error) => {
+                    console.error('Upload failed:', error);
+                    showResult('Upload Error', error);
+                }
+            }).open();
+        }
+
+        function testEnvironmentPicker() {
+            client.picker({
+                accept: ['.glb', '.gltf'],
+                maxFiles: 1,
+                onUploadDone: (result) => {
+                    console.log('Environment picker result:', result);
+                    showResult('Environment Picker Result', result);
+                },
+                onFileUploadFailed: (error) => {
+                    console.error('Upload failed:', error);
+                    showResult('Upload Error', error);
+                }
+            }).open();
+        }
+
+        function testImagePicker() {
+            client.picker({
+                accept: ['image/*'],
+                maxFiles: 1,
+                onUploadDone: (result) => {
+                    console.log('Image picker result:', result);
+                    showResult('Image Picker Result', result);
+                },
+                onFileUploadFailed: (error) => {
+                    console.error('Upload failed:', error);
+                    showResult('Upload Error', error);
+                }
+            }).open();
+        }
+    </script>
+</body>
+</html>

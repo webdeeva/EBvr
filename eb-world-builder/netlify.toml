@@ -1,0 +1,50 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[build.environment]
+  # React app requires these to be prefixed with REACT_APP_
+  REACT_APP_NODE_ENV = "production"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+    
+[[headers]]
+  for = "*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+    
+[[headers]]
+  for = "*.glb"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+    
+[[headers]]
+  for = "*.gltf"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
